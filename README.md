@@ -87,6 +87,13 @@ module "subnet" {
   network_security_group_id     = azurerm_network_security_group.this.id
 }
 ```
+### See more usage examples here:
+- [:arrow_forward: Example Usage: Creating Subnet, NSG and RT](examples/example-2/main.tf)
+- [:arrow_forward: Example Usage: Creating Subnet, NSG, RT, Adding UDR for NVA and Disabling BGP Propagation on route table](examples/example-3/main.tf)
+- [:arrow_forward: Example Usage: Creating Subnet, NSG, RT and adding service endpoints to the subnet for Azure Storage and SQL](examples/example-4/main.tf)
+
+> :information_source: **Note:** <br>
+> Otherwise, see the full module test here: [:arrow_forward: test/autotest](test/autotest/main.tf) <br>
 
 ## Resources
 
@@ -141,7 +148,6 @@ The following arguments are supported:
   > :information_source: **NOTE:**
   > <br>
   > Currently only a single address prefix can be set as the [Multiple Subnet Address Prefixes](https://github.com/Azure/azure-cli/issues/18194#issuecomment-880484269) Feature is not yet in public preview or general availability. <br>
-  > <br>
 
 - `virtual_network_resource_id` - (Required) The ID of the virtual network where the subnet should be created. Changing this forces a new resource to be created.
 
@@ -151,7 +157,6 @@ The following arguments are supported:
   > :information_source: **NOTE:**
   > <br>
   > If this is set to **`false`** the following argument is required **`network_security_group_id`** if it is not **`set`** then the deployment will conflict with the Azure Policies and subnet can't be deployed in compliance with the policy. <br>
-  > <br>
 
 - `network_security_group_id` - (Optional) The ID of existing network security group to associate with the subnet, make sure the **`create_sub_network_resources`** is set to **`false`** if you want to reference an existing network security group.
 
@@ -161,7 +166,6 @@ The following arguments are supported:
   > :information_source: **NOTE:**
   > <br>
   > If this is set to **`false`** the following argument is required **`route_table_id`** if it is not **`set`** then the deployment will conflict with the Azure Policies and subnet can't be deployed in compliance with the policy. <br>
-  > <br>
 
 - `route_table_id` - (Optional) The ID of existing route table to associate with the subnet.
 
@@ -171,20 +175,17 @@ The following arguments are supported:
   > :information_source: **NOTE:**
   > <br>
   > Specify the IP address of the network virtual appliance often a firewall, located in a hub virtual network, this is used to create user defined route in the new route table to route `0.0.0.0/0` to the network virtual appliance. <br>
-  > <br>
 
 - `sub_resource_group_name` - (Optional) The name of the resource group where the sub-resources will be created. Changing this forces a new resource to be created.
 
 - `delegation_service_name` - (Optional) Provide the service name for the subnet delegation configuration.
   > :information_source: **NOTE:** <br>
   > Delegating to service may not be available in all regions. Check if the service you are delegating to is available in your region using the [Azure CLI](https://learn.microsoft.com/cli/azure/network/vnet/subnet?view=azure-cli-latest#az-network-vnet-subnet-list-available-delegations()&wt.mc_id=SEC-MVP-5005265). <br>
-  <br>
 
 - `service_endpoint_names` - (Optional) List of service endpoints to associate with the subnet, multiple service endpoints are supported.
   > :information_source: **NOTE:**
   > <br>
   > In short Service Endpoints are used to secure Azure service resources to use the virtual network instead of the public internet, utilizing the azure backbone network. Multiple Service Endpoints can be defined on each subnet. <br>
-  <br> 
 
   **Generally available service endpoints for all regions are:** <br>
   `Microsoft.Storage`, `Microsoft.Storage.Global`, `Microsoft.Sql`, `Microsoft.AzureCosmosDB`, `Microsoft.KeyVault`, `Microsoft.ServiceBus`, `Microsoft.EventHub`, `Microsoft.AzureActiveDirectory`, `Microsoft.Web`, `Microsoft.CognitiveServices` <br>
@@ -201,14 +202,12 @@ The following arguments are supported:
   > <br>
   > Private Link Service Network Policies are enabled by default to ensure that traffic from Private Link services go through the Network Security Group and uses the User Defined Routes in the route table associated with the subnet. <br>
   > If this is set to **`false`** the traffic for all private link services will bypass the Network Security Group and the User Defined Routes in the route table associated with the subnet. <br>
-  > <br>
 
 - `private_endpoint_network_policies_enabled` - (Optional) Enable or Disable network policies for the private endpoint on the subnet. Setting this to `true` will Enable the policy and setting this to `false` will Disable the policy. Defaults to `true`
   > :information_source: **NOTE:**
   > <br>
   > Private Endpoint Network Policies are enabled by default to ensure that traffic from the private endpoint go through the Network Security Group and uses the User Defined Routes in the route table associated with the subnet. <br>
   > If this is set to **`false`** the traffic for all private endpoints in the subnet will bypass the Network Security Group and the User Defined Routes in the route table associated with the subnet. <br>
-  > <br>
 
 - `disable_bgp_route_propagation` - (Optional) Boolean flag which controls propagation of routes learned by BGP on that route table. `true` means disable. Defaults to `false`, when used in combination with `create_sub_network_resources` and `nva_ip_address` this should be set to `true` to override the default route `0.0.0.0/0` and to prevent routes learned by BGP (Route Propagation) to bypass the network virtual appliance.
 
@@ -241,18 +240,17 @@ The Azure API might throw an `Response 409: 409 Conflict`, `Error Code: AnotherO
 │ }
 │ --------------------------------------------------------------------------------
 ```
-  <br>
 
   This happens particularly when calling the module multiple times in the same terraform run, the workaround is to use explicit `depends_on` on the module resource to ensure that the module is ran sequentially e.g. <br>
 
   ```hcl
   module "subnet1" {
-    source = ""
+    source = "haflidif/alz-subnet/azurerm"
     ...ommitted for brevity
   }
 
   module "subnet2" {
-    source = ""
+    source = "haflidif/alz-subnet/azurerm"
     ...ommitted for brevity
     depends_on = [ module.subnet1 ]
   }

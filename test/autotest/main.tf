@@ -156,31 +156,33 @@ module "subnet_new_nsg_existing_rt" {
 
 output "subnets" {
   value = {
-    subnet_existing_nsg_rt    = module.subnet_existing_nsg_rt.subnet_id
-    subnet_new_nsg_rt         = module.subnet_new_nsg_rt.subnet_id
-    subnet_service_endpoint   = module.subnet_service_endpoint.subnet_id
-    subnet_service_delegation = module.subnet_service_delegation.subnet_id
-    subnet_nsg_rt_udr         = module.subnet_nsg_rt_udr.subnet_id
+    subnet_existing_nsg_rt     = module.subnet_existing_nsg_rt.subnet_id
+    subnet_new_nsg_rt          = module.subnet_new_nsg_rt.subnet_id
+    subnet_service_endpoint    = module.subnet_service_endpoint.subnet_id
+    subnet_service_delegation  = module.subnet_service_delegation.subnet_id
+    subnet_nsg_rt_udr          = module.subnet_nsg_rt_udr.subnet_id
+    subnet_new_nsg_existing_rt = module.subnet_new_nsg_existing_rt.subnet_id
   }
 }
 
 output "route_table_ids" {
   value = {
-    subnet_existing_nsg_rt    = module.subnet_existing_nsg_rt.subnet_route_table_id
-    subnet_new_nsg_rt         = module.subnet_new_nsg_rt.subnet_route_table_id
-    subnet_service_endpoint   = module.subnet_service_endpoint.subnet_route_table_id
-    subnet_service_delegation = module.subnet_service_delegation.subnet_route_table_id
-    subnet_nsg_rt_udr         = module.subnet_nsg_rt_udr.subnet_route_table_id
+    subnet_existing_nsg_rt     = module.subnet_existing_nsg_rt.subnet_route_table_id
+    subnet_new_nsg_rt          = module.subnet_new_nsg_rt.subnet_route_table_id
+    subnet_service_endpoint    = module.subnet_service_endpoint.subnet_route_table_id
+    subnet_service_delegation  = module.subnet_service_delegation.subnet_route_table_id
+    subnet_nsg_rt_udr          = module.subnet_nsg_rt_udr.subnet_route_table_id
+    subnet_new_nsg_existing_rt = module.subnet_new_nsg_existing_rt.subnet_route_table_id
   }
 }
 
 output "network_security_group_ids" {
   value = {
-    subnet_existing_nsg_rt    = module.subnet_existing_nsg_rt.subnet_nsg_id
-    subnet_new_nsg_rt         = module.subnet_new_nsg_rt.subnet_nsg_id
-    subnet_service_endpoint   = module.subnet_service_endpoint.subnet_nsg_id
-    subnet_service_delegation = module.subnet_service_delegation.subnet_nsg_id
-    subnet_nsg_rt_udr         = module.subnet_nsg_rt_udr.subnet_nsg_id
+    subnet_existing_nsg_rt     = module.subnet_existing_nsg_rt.subnet_nsg_id
+    subnet_new_nsg_rt          = module.subnet_new_nsg_rt.subnet_nsg_id
+    subnet_service_endpoint    = module.subnet_service_endpoint.subnet_nsg_id
+    subnet_service_delegation  = module.subnet_service_delegation.subnet_nsg_id
+    subnet_nsg_rt_udr          = module.subnet_nsg_rt_udr.subnet_nsg_id
+    subnet_new_nsg_existing_rt = module.subnet_new_nsg_existing_rt.subnet_nsg_id
   }
-
 }

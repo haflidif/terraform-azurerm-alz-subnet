@@ -13,6 +13,13 @@ content: |-
     ```hcl
     {{ include "examples/example-1/main.tf" }}
     ```
+    ### See more usage examples here:
+    - [:arrow_forward: Example Usage: Creating Subnet, NSG and RT](examples/example-2/main.tf)
+    - [:arrow_forward: Example Usage: Creating Subnet, NSG, RT, Adding UDR for NVA and Disabling BGP Propagation on route table](examples/example-3/main.tf)
+    - [:arrow_forward: Example Usage: Creating Subnet, NSG, RT and adding service endpoints to the subnet for Azure Storage and SQL](examples/example-4/main.tf)
+
+    > :information_source: **Note:** <br>
+    > Otherwise, see the full module test here: [:arrow_forward: test/autotest](test/autotest/main.tf) <br>
 
   {{ .Resources }}
   {{ .Inputs }}
