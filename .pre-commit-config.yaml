@@ -1,0 +1,19 @@
+repos:
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.77.0
+  hooks:
+    - id: terraform_fmt
+      args:
+        - --args=-write=true
+    - id: terraform_docs
+      args:
+        - '--hook-config=--path-to-file=README.md'
+        - '--args=--lockfile=false'
+    - id: terraform_validate
+      exclude: '^(examples)/|^(test)/'
+    - id: terraform_tflint
+      exclude: '^(examples)/|^(test)/'
+    - id: terraform_tfsec
+    # - id: terraform_checkov
+    #   args:
+    #     - '--args=--skip-check CKV2_GHA_1' # https://github.com/bridgecrewio/checkov/issues/4127 issue with Github Workflow.

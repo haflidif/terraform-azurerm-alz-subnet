@@ -1,0 +1,35 @@
+### This Workflow fully automates a Git release after a Pull Request that is not created by depandabot is merged.
+
+name: "Automated Release"
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  if_merged:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
+    steps:
+      - name: Determine version
+        id: version
+        uses: zwaldowski/semver-release-action@v3
+        with:
+          bump: patch
+          dry_run: true
+          github_token: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Create new release and push to registry
+        id: release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          generateReleaseNotes: true
+          name: "v${{ steps.version.outputs.version }}"
+          tag: ${{ steps.version.outputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}

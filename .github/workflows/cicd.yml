@@ -1,0 +1,39 @@
+### This workflow will run when a PR is opened on main branch and as continues plan when pushing to feature branch ###
+### Full Plan test is done by doing a plan of config under ./tests/autotest ###
+
+name: "Automated Plan"
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      actions: read
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.0
+
+      - name: Run Automated Tests - Terraform Plan
+        uses: Pwd9000-ML/terraform-azurerm-tests@v1.0.6
+        with:
+          test_type: plan ## (Required) Valid options are "plan", "plan-apply", "plan-apply-destroy". Default="plan"
+          path: "test/autotest" ## (Optional) Specify path to test module to run.
+          tf_version: latest ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
+          tf_vars_file: testing.tfvars ## (Required) Specifies Terraform TFVARS file name inside module path (Testing vars)
+          tf_key: tf-mod-test-alz-subnet ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact (testing state)
+          az_resource_group: rg-azviking-tfstate ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage account
+          az_storage_acc: stazvikingstatec2e559ef ## (Required) AZ backend - AZURE terraform backend storage account
+          az_container_name: test ## (Required) AZ backend - AZURE storage container hosting state files
+          arm_client_id: ${{ secrets.ARM_CLIENT_ID }} ## (Required - Dependabot Secrets) ARM Client ID
+          arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }} ## (Required - Dependabot Secrets) ARM Client Secret
+          arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required - Dependabot Secrets) ARM Subscription ID
+          arm_tenant_id: ${{ secrets.ARM_TENANT_ID }} ## (Required - Dependabot Secrets) ARM Tenant ID
+          github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) Needed to comment output on PR's. ${{ secrets.GITHUB_TOKEN }} already has permissions.
