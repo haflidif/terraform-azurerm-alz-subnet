@@ -25,6 +25,11 @@ jobs:
         with:
           mode: bump
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          noop-labels: "no release"
+          major-label: "major"
+          minor-label: "minor"
+          patch-label: "patch"
+          base-branch: "main"
 
       # - name: Getting version from label
       #   id: label
