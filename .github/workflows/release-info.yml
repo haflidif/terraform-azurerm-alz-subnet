@@ -19,7 +19,6 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           require-release-notes: true
           noop-labels:
-            no release
-            documentation
-            github_actions
-
+            - no release
+            - documentation
+            - github_actions
