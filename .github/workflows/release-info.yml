@@ -14,4 +14,8 @@ jobs:
           mode: validate
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           require-release-notes: true
-          noop-labels: 'skip-release'
+          noop-labels:
+            skip-release
+            documentation
+            github-actions
+
