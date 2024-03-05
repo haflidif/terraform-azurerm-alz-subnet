@@ -18,4 +18,4 @@ jobs:
           mode: validate
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           require-release-notes: true
-          noop-labels: "no release"
+          noop-labels: 'no release, github_actions'
