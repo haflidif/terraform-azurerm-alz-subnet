@@ -20,7 +20,7 @@ jobs:
             release-refs: main
             github-token: ${{ secrets.GITHUB_TOKEN }}
             create-release: false
-            create-tag: false
+            create-tag: true
             labels: |
                 "no release"=semver:none
                 major=semver:major
