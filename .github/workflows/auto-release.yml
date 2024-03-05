@@ -11,25 +11,43 @@ on:
 
 jobs:
   if_merged:
+    name: Bump, Tag and Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
       actions: read
     if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
     steps:
-      - name: Determine version
-        id: version
-        uses: zwaldowski/semver-release-action@v4
+      - uses: actions/checkout@v4
+      - uses: jefflinse/pr-semver-bump@v1.6.0
+        id: bump-tag-version
+        name: Bump and Tag Version
         with:
-          bump: patch
-          dry_run: true
-          github_token: ${{secrets.GITHUB_TOKEN}}
+          mode: bump
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Getting version from label
+      #   id: label
+      #   uses: zwaldowski/match-label-action@v5
+      #   with:
+      #     allowed: major, minor, patch
+      #     default_match: patch
+      
+      # - name: Determine version
+      #   id: version
+      #   uses: zwaldowski/semver-release-action@v4
+      #   with:
+      #     bump: patch
+      #     dry_run: true
+      #     github_token: ${{secrets.GITHUB_TOKEN}}
 
       - name: Create new release and push to registry
         id: release
         uses: ncipollo/release-action@v1.14.0
         with:
           generateReleaseNotes: true
-          name: "v${{ steps.version.outputs.version }}"
-          tag: ${{ steps.version.outputs.version }}
+          name: "v${{ steps.bump-tag-version.outputs.version}}"
+          tag: "${{ steps.bump-tag-version.outputs.version }}"
+          # name: "v${{ steps.version.outputs.version }}"
+          # tag: ${{ steps.version.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
