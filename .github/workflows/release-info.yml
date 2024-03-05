@@ -17,5 +17,5 @@ jobs:
           noop-labels:
             skip-release
             documentation
-            github-actions
+            github_actions
 
