@@ -155,6 +155,10 @@ The following arguments are supported:
 
 - `location` - (Required) Specifies the Azure location where the resources should be created. Changing this forces a new resource to be created.
 
+- `use_existing_resource_group` - (Optional) Boolean flag which controls if an existing resource group should be used for the NSG and Route Table. Defaults to `false`.
+
+- `existing_resource_group_name` - (Optional) The name of an existing resource group where the NSG and Route Table will be created. Changing this forces a new resource to be created.
+
 - `create_network_security_group` - (Optional) Boolean flag which controls if network security group should be created. Defaults to `true`. Set to `false` and provide value for **`network_security_group_id`** to reference existing network security group.
   > :information_source: **NOTE:**
   > <br>

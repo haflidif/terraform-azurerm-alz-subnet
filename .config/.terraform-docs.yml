@@ -14,9 +14,10 @@ content: |-
     {{ include "examples/example-1/main.tf" }}
     ```
     ### See more usage examples here:
-    - [:arrow_forward: Example Usage: Creating Subnet, NSG and RT](examples/example-2/main.tf)
-    - [:arrow_forward: Example Usage: Creating Subnet, NSG, RT, Adding UDR for NVA and Disabling BGP Propagation on route table](examples/example-3/main.tf)
-    - [:arrow_forward: Example Usage: Creating Subnet, NSG, RT and adding service endpoints to the subnet for Azure Storage and SQL](examples/example-4/main.tf)
+    - [:arrow_forward: Example: Creating a Subnet with Network Security Group and Route Table in Azure](examples/example-2/main.tf)
+    - [:arrow_forward: Example: Creating Subnet, NSG, Route Table, and Adding UDR for NVA](examples/example-3/main.tf)
+    - [:arrow_forward: Example: Creating a Subnet with Network Security Group, Route Table, and Service Endpoints](examples/example-4/main.tf)
+    - [:arrow_forward: Example: Creating Subnet, NSG, and Route Table in an Existing Resource Group](examples/example-5/main.tf)
 
     > :information_source: **Note:** <br>
     > Otherwise, see the full module test here: [:arrow_forward: test/autotest](test/autotest/main.tf) <br>
