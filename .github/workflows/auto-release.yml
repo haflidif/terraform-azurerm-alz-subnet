@@ -25,24 +25,17 @@ jobs:
           allowed: major, minor, patch
           default_match: "no release"
 
-  tag_and_release:
-    needs: get_version_label
-    if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') && (needs.get_version_label.outputs.match != 'no release') }}
-    name: Bump, Tag and Release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      actions: read
-    steps:
       - name: Determine version
+        if: ${{ steps.label.outputs.match != 'no release' }}
         id: version
         uses: zwaldowski/semver-release-action@v4
         with:
-          bump: ${{ needs.get_version_label.outputs.match }}
+          bump: ${{ steps.label.outputs.match }}
           dry_run: true
           github_token: ${{secrets.GITHUB_TOKEN}}
 
       - name: Create new release and push to registry
+        if: ${{ steps.label.outputs.match != 'no release' }}
         id: release
         uses: ncipollo/release-action@v1.14.0
         with:
