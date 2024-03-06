@@ -11,7 +11,7 @@ on:
 
 jobs:
   get_version_label:
-    name: Get Version from label
+    name: Bump, Tag and Release
     if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
     runs-on: ubuntu-latest
     permissions:
@@ -24,6 +24,9 @@ jobs:
         with:
           allowed: major, minor, patch
           default_match: "no release"
+
+      - name: "Release: ${{ steps.label.outputs.match }}"
+        run: echo "${{ steps.label.outputs.match }}"
 
       - name: Determine version
         if: ${{ steps.label.outputs.match != 'no release' }}
