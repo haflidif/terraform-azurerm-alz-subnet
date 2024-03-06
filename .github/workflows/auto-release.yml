@@ -10,22 +10,39 @@ on:
       - closed
 
 jobs:
-  if_merged:
+  tag_and_release:
+    name: Bump, Tag and Release
+    if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
       actions: read
-    if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
     steps:
+      - name: Getting version from label
+        id: label
+        uses: zwaldowski/match-label-action@v5
+        with:
+          allowed: major, minor, patch
+          default_match: "no release"
+
+      - name: "Release: ${{ steps.label.outputs.match }}"
+        run: echo "${{ steps.label.outputs.match }}"
+
       - name: Determine version
+        if: ${{ steps.label.outputs.match != 'no release' }}
         id: version
         uses: zwaldowski/semver-release-action@v4
         with:
-          bump: patch
+          bump: ${{ steps.label.outputs.match }}
           dry_run: true
           github_token: ${{secrets.GITHUB_TOKEN}}
 
+      - name: "Version: ${{ steps.version.outputs.version }}"
+        if: ${{ steps.label.outputs.match != 'no release' }}
+        run: echo "${{ steps.version.outputs.version }}"
+
       - name: Create new release and push to registry
+        if: ${{ steps.label.outputs.match != 'no release' }}
         id: release
         uses: ncipollo/release-action@v1.14.0
         with:

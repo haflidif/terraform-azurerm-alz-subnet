@@ -1,0 +1,32 @@
+name: Release Info
+on:
+  pull_request:
+    types:
+      [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
+jobs:
+  check-pr:
+    name: Validate Release Label and Notes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+      issues: read
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - name: Getting version from label
+        id: label
+        uses: zwaldowski/match-label-action@v5
+        with:
+          allowed: major, minor, patch
+          default_match: "no release"
+    
+      - name: "Release: ${{ steps.label.outputs.match }}"
+        run: echo "Label is ${{ steps.label.outputs.match }}"
+        
+      - name: Echo the version if it's not "no release"
+        if: steps.label.outputs.match != 'no release'
+        run: echo "Label is set to ${{ steps.label.outputs.match }}"
+      
+      - name: Echo the version if it's "no release"
+        if: steps.label.outputs.match == 'no release'
+        run: echo "Label is set to ${{ steps.label.outputs.match }}"
