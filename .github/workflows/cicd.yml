@@ -7,7 +7,11 @@ on:
   pull_request:
     branches:
       - main
-
+    paths: 
+      - '!.github/**'
+      - '!.config/**'
+      - '!examples/**'
+      
 jobs:
   terraform-plan:
     runs-on: ubuntu-latest
