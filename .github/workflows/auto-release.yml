@@ -37,6 +37,10 @@ jobs:
           dry_run: true
           github_token: ${{secrets.GITHUB_TOKEN}}
 
+      - name: "Version: ${{ steps.version.outputs.version }}"
+        if: ${{ steps.label.outputs.match != 'no release' }}
+        run: echo "${{ steps.version.outputs.version }}"
+
       - name: Create new release and push to registry
         if: ${{ steps.label.outputs.match != 'no release' }}
         id: release
