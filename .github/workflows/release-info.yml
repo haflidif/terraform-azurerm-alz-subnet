@@ -1,26 +1,29 @@
 name: Release Info
 on:
   pull_request:
-    types: [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
+    types:
+      [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
 jobs:
   check-pr:
     name: Validate Release Label and Notes
     runs-on: ubuntu-latest
     permissions:
-        contents: write
-        pull-requests: read
-        issues: read
+      contents: write
+      pull-requests: read
+      issues: read
     if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: jefflinse/pr-semver-bump@v1.6.0
-        name: Validate Pull Request Metadata
+      - name: Getting version from label
+        id: label
+        uses: zwaldowski/match-label-action@v5
         with:
-          mode: validate
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          require-release-notes: true
-          noop-labels: "no release"
-          major-label: "major"
-          minor-label: "minor"
-          patch-label: "patch"
-          base-branch: "main"
+          allowed: major, minor, patch
+          default_match: "no release"
+        
+      - name: Echo the version if it's not "no release"
+        if: steps.label.outputs.match != 'no release'
+        run: echo "Label is set to ${{ steps.label.outputs.match }}"
+      
+      - name: Echo the version if it's "no release"
+        if: steps.label.outputs.match == 'no release'
+        run: echo "Label is set to ${{ steps.label.outputs.match }}"

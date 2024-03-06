@@ -10,51 +10,43 @@ on:
       - closed
 
 jobs:
-  if_merged:
+  get_version_label:
+    name: Get Version from label
+    if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Getting version from label
+        id: label
+        uses: zwaldowski/match-label-action@v5
+        with:
+          allowed: major, minor, patch
+          default_match: "no release"
+
+  tag_and_release:
+    needs: get_version_label
+    if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') && (needs.get_version_label.outputs.match != 'no release') }}
     name: Bump, Tag and Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
       actions: read
-    if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: jefflinse/pr-semver-bump@v1.6.0
-        id: bump-tag-version
-        name: Bump and Tag Version
+      - name: Determine version
+        id: version
+        uses: zwaldowski/semver-release-action@v4
         with:
-          mode: bump
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          require-release-notes: true
-          noop-labels: "no release"
-          major-label: "major"
-          minor-label: "minor"
-          patch-label: "patch"
-          base-branch: "main"
+          bump: ${{ needs.get_version_label.outputs.match }}
+          dry_run: true
+          github_token: ${{secrets.GITHUB_TOKEN}}
 
-      # - name: Getting version from label
-      #   id: label
-      #   uses: zwaldowski/match-label-action@v5
-      #   with:
-      #     allowed: major, minor, patch
-      #     default_match: patch
-      
-      # - name: Determine version
-      #   id: version
-      #   uses: zwaldowski/semver-release-action@v4
-      #   with:
-      #     bump: patch
-      #     dry_run: true
-      #     github_token: ${{secrets.GITHUB_TOKEN}}
-
-        if: ${{ steps.bump-tag-version.outputs.skipped == 'false' }}
       - name: Create new release and push to registry
         id: release
         uses: ncipollo/release-action@v1.14.0
         with:
           generateReleaseNotes: true
-          name: "v${{ steps.bump-tag-version.outputs.version}}"
-          tag: "${{ steps.bump-tag-version.outputs.version }}"
-          # name: "v${{ steps.version.outputs.version }}"
-          # tag: ${{ steps.version.outputs.version }}
+          name: "v${{ steps.version.outputs.version }}"
+          tag: ${{ steps.version.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
