@@ -10,12 +10,12 @@ on:
       - closed
 
 jobs:
-  get_version_label:
+  tag_and_release:
     name: Bump, Tag and Release
     if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       actions: read
     steps:
       - name: Getting version from label
