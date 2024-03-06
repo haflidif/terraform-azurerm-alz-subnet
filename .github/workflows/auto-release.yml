@@ -11,7 +11,7 @@ on:
 
 jobs:
   get_version_label:
-    name: Get Version from label
+    name: Bump, Tag and Release
     if: ${{ (github.event.pull_request.merged) && (github.actor != 'dependabot[bot]') }}
     runs-on: ubuntu-latest
     permissions:
@@ -25,6 +25,9 @@ jobs:
           allowed: major, minor, patch
           default_match: "no release"
 
+      - name: "Release: ${{ steps.label.outputs.match }}"
+        run: echo "${{ steps.label.outputs.match }}"
+
       - name: Determine version
         if: ${{ steps.label.outputs.match != 'no release' }}
         id: version
@@ -33,6 +36,10 @@ jobs:
           bump: ${{ steps.label.outputs.match }}
           dry_run: true
           github_token: ${{secrets.GITHUB_TOKEN}}
+
+      - name: "Version: ${{ steps.version.outputs.version }}"
+        if: ${{ steps.label.outputs.match != 'no release' }}
+        run: echo "${{ steps.version.outputs.version }}"
 
       - name: Create new release and push to registry
         if: ${{ steps.label.outputs.match != 'no release' }}

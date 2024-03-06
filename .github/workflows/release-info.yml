@@ -19,6 +19,9 @@ jobs:
         with:
           allowed: major, minor, patch
           default_match: "no release"
+    
+      - name: "Release: ${{ steps.label.outputs.match }}"
+        run: echo "Label is ${{ steps.label.outputs.match }}"
         
       - name: Echo the version if it's not "no release"
         if: steps.label.outputs.match != 'no release'
