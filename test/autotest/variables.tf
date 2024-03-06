@@ -78,6 +78,12 @@ variable "alz_new_nsg_existing_rt_address_space" {
   description = "Address prefix for the subnet test with new NSG and existing RT"
 }
 
+variable "alz_existing_rg_address_space" {
+  type        = list(string)
+  default     = ["10.30.0.192/27"]
+  description = "Address prefix for the subnet test with existing RG"
+}
+
 variable "nva_ip_address" {
   description = "(Optional) The IP address of the network virtual appliance often a firewall, located in a hub virtual network, this is used to create user defined route to route"
   type        = string

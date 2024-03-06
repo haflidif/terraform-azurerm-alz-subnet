@@ -13,6 +13,7 @@ alz_new_nsg_rt_service_endpoint_address_space = ["10.30.0.64/27"]
 alz_new_nsg_rt_delegate_address_space         = ["10.30.0.96/27"]
 alz_new_nsg_rt_nva_ip_udr_address_space       = ["10.30.0.128/27"]
 alz_new_nsg_existing_rt_address_space         = ["10.30.0.160/27"]
+alz_existing_rg_address_space                 = ["10.30.0.192/27"]
 nva_ip_address                                = "10.20.0.4"
 
 tags = {

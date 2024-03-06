@@ -1,6 +1,6 @@
 # Creating a resource group for the subnet sub resources, NSG and Route Tables if it's not referenced by input variable
 resource "azurerm_resource_group" "sub_resouces_rg" {
-  count    = var.create_network_security_group || var.create_route_table ? 1 : 0
+  count    = ((var.create_network_security_group || var.create_route_table) && var.use_existing_resource_group == false) ? 1 : 0
   name     = var.sub_resource_group_name
   location = var.location
   tags     = var.tags
@@ -18,7 +18,7 @@ resource "azurerm_network_security_group" "nsg" {
   count               = var.create_network_security_group ? 1 : 0
   name                = var.network_security_group_name
   location            = var.location
-  resource_group_name = azurerm_resource_group.sub_resouces_rg[0].name
+  resource_group_name = local.resource_group_name
   tags                = var.tags
 
   depends_on = [azurerm_resource_group.sub_resouces_rg]
@@ -36,7 +36,7 @@ resource "azurerm_route_table" "route_table" {
   count                         = var.create_route_table ? 1 : 0
   name                          = var.route_table_name
   location                      = var.location
-  resource_group_name           = azurerm_resource_group.sub_resouces_rg[0].name
+  resource_group_name           = local.resource_group_name
   disable_bgp_route_propagation = var.disable_bgp_route_propagation
 
   tags = var.tags
@@ -55,7 +55,7 @@ resource "azurerm_route_table" "route_table" {
 resource "azurerm_route" "default_route_to_nva" {
   count                  = var.nva_ip_address != "" ? 1 : 0
   name                   = "default-route-to-nva"
-  resource_group_name    = azurerm_resource_group.sub_resouces_rg[0].name
+  resource_group_name    = local.resource_group_name
   route_table_name       = azurerm_route_table.route_table[0].name
   address_prefix         = "0.0.0.0/0"
   next_hop_type          = "VirtualAppliance"

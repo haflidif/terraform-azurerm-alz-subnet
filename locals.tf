@@ -1,6 +1,9 @@
 # Add all local concatenation and values here
 locals {
 
+  # Creating a local value to support using existing resource group or creating a new one.
+  resource_group_name = var.existing_resource_group_name != "" ? var.existing_resource_group_name : var.sub_resource_group_name
+
   # Creating local value to handle empty tuple of azurerm_route_table when var.route_table_id is supplied.
   created_route_table_id = var.create_route_table == true && var.route_table_name != "" ? try(azurerm_route_table.route_table[0].id) : ""
 
@@ -30,4 +33,5 @@ locals {
       service = serviceEndpoint
     }
   ]
+
 }

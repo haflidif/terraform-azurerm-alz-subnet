@@ -25,6 +25,18 @@ variable "location" {
 ###       Optional Variables       ###
 ######################################
 
+variable "use_existing_resource_group" {
+  description = "(Optional) Boolean flag which controls if an existing resource group should be used. Defaults to `false`."
+  type        = bool
+  default     = false
+}
+
+variable "existing_resource_group_name" {
+  description = "(Optional) The name of an existing resource group where the nsg and route table will be created. Changing this forces a new resource to be created."
+  type        = string
+  default     = ""
+}
+
 variable "sub_resource_group_name" {
   description = "(Optional) The name of the resource group where the sub-resources will be created. Changing this forces a new resource to be created."
   type        = string

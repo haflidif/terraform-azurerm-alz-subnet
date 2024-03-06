@@ -116,6 +116,7 @@ module "subnet" {
 | <a name="input_create_route_table"></a> [create\_route\_table](#input\_create\_route\_table) | (Optional) Boolean flag which controls if route table should be created. Defaults to `true`. Set to `false` and provide value for `route_table_id` to reference existing route table. | `bool` | `true` | no |
 | <a name="input_delegation_service_name"></a> [delegation\_service\_name](#input\_delegation\_service\_name) | (Optional) Provide the service name for the subnet delegation configuration. | `string` | `""` | no |
 | <a name="input_disable_bgp_route_propagation"></a> [disable\_bgp\_route\_propagation](#input\_disable\_bgp\_route\_propagation) | (Optional) Boolean flag which controls propagation of routes learned by BGP on that route table. `true` means disable. Defaults to `false`, when used in combination with `create_sub_network_resources` and 'nva\_ip\_address' this should be set to `true` to prevent the default 0.0.0.0/0 route to be propagated in the route table via BGP. | `bool` | `false` | no |
+| <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | (Optional) The name of an existing resource group where the nsg and route table will be created. Changing this forces a new resource to be created. | `string` | `""` | no |
 | <a name="input_network_security_group_id"></a> [network\_security\_group\_id](#input\_network\_security\_group\_id) | (Optional) The ID of existing network security group to associate with the subnet. | `string` | `""` | no |
 | <a name="input_network_security_group_name"></a> [network\_security\_group\_name](#input\_network\_security\_group\_name) | (Optional) The name of the new network security group to associate with the subnet. | `string` | `""` | no |
 | <a name="input_nva_ip_address"></a> [nva\_ip\_address](#input\_nva\_ip\_address) | (Optional) The IP address of the network virtual appliance often a firewall, located in a hub virtual network, this is used to create user defined route to route 0.0.0.0/0 traffic to the network virtual appliance. | `string` | `""` | no |
@@ -126,6 +127,7 @@ module "subnet" {
 | <a name="input_service_endpoint_names"></a> [service\_endpoint\_names](#input\_service\_endpoint\_names) | (Optional) List of service endpoints to associate with the subnet. | `list(string)` | `[]` | no |
 | <a name="input_sub_resource_group_name"></a> [sub\_resource\_group\_name](#input\_sub\_resource\_group\_name) | (Optional) The name of the resource group where the sub-resources will be created. Changing this forces a new resource to be created. | `string` | `""` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) A mapping of tags to assign to the resource. | `map(string)` | `{}` | no |
+| <a name="input_use_existing_resource_group"></a> [use\_existing\_resource\_group](#input\_use\_existing\_resource\_group) | (Optional) Boolean flag which controls if an existing resource group should be used. Defaults to `false`. | `bool` | `false` | no |
 ## Outputs
 
 | Name | Description |
@@ -152,6 +154,10 @@ The following arguments are supported:
 - `virtual_network_resource_id` - (Required) The ID of the virtual network where the subnet should be created. Changing this forces a new resource to be created.
 
 - `location` - (Required) Specifies the Azure location where the resources should be created. Changing this forces a new resource to be created.
+
+- `use_existing_resource_group` - (Optional) Boolean flag which controls if an existing resource group should be used for the NSG and Route Table. Defaults to `false`.
+
+- `existing_resource_group_name` - (Optional) The name of an existing resource group where the NSG and Route Table will be created. Changing this forces a new resource to be created.
 
 - `create_network_security_group` - (Optional) Boolean flag which controls if network security group should be created. Defaults to `true`. Set to `false` and provide value for **`network_security_group_id`** to reference existing network security group.
   > :information_source: **NOTE:**
