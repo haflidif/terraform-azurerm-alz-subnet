@@ -9,7 +9,7 @@ resource "random_id" "rg" {
 
 # Creating multiple Random id to append to the resources created by the module.
 resource "random_id" "test" {
-  count       = 6
+  count       = 7
   byte_length = 4
 }
 
@@ -174,11 +174,32 @@ module "subnet_existing_rg" {
   existing_resource_group_name  = azurerm_resource_group.existing.name
   create_network_security_group = true
   create_route_table            = true
-  route_table_name            = "${var.prereq_route_table_name}-${lower(random_id.test[5].hex)}"
-  network_security_group_name = "${var.prereq_network_security_group_name}-${lower(random_id.test[5].hex)}"
+  route_table_name              = "${var.prereq_route_table_name}-${lower(random_id.test[5].hex)}"
+  network_security_group_name   = "${var.prereq_network_security_group_name}-${lower(random_id.test[5].hex)}"
   tags                          = var.tags
 
   depends_on = [module.subnet_new_nsg_existing_rt]
+}
+
+################################################################################
+#         Testing: Subnet with existing resource group for NSG but without RT  #
+################################################################################
+
+module "subnet_existing_rg_no_rt" {
+  source                        = "../.."
+  subnet_name                   = "alz-subnet-module-test-snet-existing-rg-no-rt"
+  address_prefixes              = var.alz_existing_rg_no_rt_address_space
+  virtual_network_resource_id   = azurerm_virtual_network.this.id
+  location                      = azurerm_resource_group.this.location
+  use_existing_resource_group   = true
+  existing_resource_group_name  = azurerm_resource_group.existing.name
+  create_network_security_group = true
+  create_route_table            = false
+  network_security_group_name   = "${var.prereq_network_security_group_name}-${lower(random_id.test[6].hex)}"
+  tags                          = var.tags
+
+  depends_on = [module.subnet_existing_rg]
+
 }
 
 output "subnets" {
@@ -190,6 +211,7 @@ output "subnets" {
     subnet_nsg_rt_udr          = module.subnet_nsg_rt_udr.subnet_id
     subnet_new_nsg_existing_rt = module.subnet_new_nsg_existing_rt.subnet_id
     subnet_existing_rg         = module.subnet_existing_rg.subnet_id
+    subnet_existing_rg_no_rt   = module.subnet_existing_rg_no_rt.subnet_id
   }
 }
 
@@ -202,6 +224,7 @@ output "route_table_ids" {
     subnet_nsg_rt_udr          = module.subnet_nsg_rt_udr.subnet_route_table_id
     subnet_new_nsg_existing_rt = module.subnet_new_nsg_existing_rt.subnet_route_table_id
     subnet_existing_rg         = module.subnet_existing_rg.subnet_route_table_id
+    subnet_existing_rg_no_rt   = module.subnet_existing_rg_no_rt.subnet_route_table_id
   }
 }
 
@@ -214,5 +237,6 @@ output "network_security_group_ids" {
     subnet_nsg_rt_udr          = module.subnet_nsg_rt_udr.subnet_nsg_id
     subnet_new_nsg_existing_rt = module.subnet_new_nsg_existing_rt.subnet_nsg_id
     subnet_existing_rg         = module.subnet_existing_rg.subnet_nsg_id
+    subnet_existing_rg_no_rt   = module.subnet_existing_rg_no_rt.subnet_nsg_id
   }
 }

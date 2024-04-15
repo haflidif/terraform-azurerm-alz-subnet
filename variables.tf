@@ -63,7 +63,7 @@ variable "network_security_group_name" {
 }
 
 variable "create_route_table" {
-  description = "(Optional) Boolean flag which controls if route table should be created. Defaults to `true`. Set to `false` and provide value for `route_table_id` to reference existing route table."
+  description = "(Optional) Boolean flag which controls if route table should be created. Defaults to `true`. Set to `false` and either provide value for `route_table_id` to reference existing route table, or skip providing value for `route_table_id` to not use a route table at all."
   type        = bool
   default     = true
 }

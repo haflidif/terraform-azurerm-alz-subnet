@@ -84,6 +84,12 @@ variable "alz_existing_rg_address_space" {
   description = "Address prefix for the subnet test with existing RG"
 }
 
+variable "alz_existing_rg_no_rt_address_space" {
+  type        = list(string)
+  default     = ["10.30.0.224/28"]
+  description = "Address prefix for the subnet test with existing RG and no RT"
+}
+
 variable "nva_ip_address" {
   description = "(Optional) The IP address of the network virtual appliance often a firewall, located in a hub virtual network, this is used to create user defined route to route"
   type        = string

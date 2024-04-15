@@ -83,13 +83,16 @@ resource "azapi_resource" "subnet" {
       privateEndpointNetworkPolicies    = lookup(local.private_link_and_endpoint_network_policies_enabled_map, var.private_endpoint_network_policies_enabled)
       privateLinkServiceNetworkPolicies = lookup(local.private_link_and_endpoint_network_policies_enabled_map, var.private_link_service_network_policies_enabled)
 
-      networkSecurityGroup = {
-        id = coalesce(var.network_security_group_id, local.created_network_security_group_id)
-      }
+      # Conditionally include networkSecurityGroup
+      networkSecurityGroup = var.network_security_group_id != "" || local.created_network_security_group_id != "" ? {
+        id = try(coalesce(var.network_security_group_id, local.created_network_security_group_id), "")
+      } : null
 
-      routeTable = {
-        id = coalesce(var.route_table_id, local.created_route_table_id)
-      }
+      # Conditionally include routeTable
+      routeTable = var.route_table_id != "" || local.created_route_table_id != "" ? {
+        id = try(coalesce(var.route_table_id, local.created_route_table_id), "")
+      } : null
+
     }
   })
 }
