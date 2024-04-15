@@ -36,10 +36,10 @@ Please have a look at the [Known Issues](#known-issues) section for more informa
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | >= 1.9, < 2.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.11, < 4.0 |
 
-## Simple module usage
-
-```hcl
-# Simple usage to showcase the functionality of the module
+  ## Simple module usage
+      
+  ```hcl
+  # Simple usage to showcase the functionality of the module
 
 ########################
 # Pre-requisites Setup #
@@ -86,14 +86,15 @@ module "subnet" {
   route_table_id                = azurerm_route_table.this.id
   network_security_group_id     = azurerm_network_security_group.this.id
 }
-```
-### See more usage examples here:
-- [:arrow_forward: Example Usage: Creating Subnet, NSG and RT](examples/example-2/main.tf)
-- [:arrow_forward: Example Usage: Creating Subnet, NSG, RT, Adding UDR for NVA and Disabling BGP Propagation on route table](examples/example-3/main.tf)
-- [:arrow_forward: Example Usage: Creating Subnet, NSG, RT and adding service endpoints to the subnet for Azure Storage and SQL](examples/example-4/main.tf)
+  ```
+  ### See more usage examples here:
+  - [:arrow_forward: Example: Creating a Subnet with Network Security Group and Route Table in Azure](examples/example-2/main.tf)
+  - [:arrow_forward: Example: Creating Subnet, NSG, Route Table, and Adding UDR for NVA](examples/example-3/main.tf)
+  - [:arrow_forward: Example: Creating a Subnet with Network Security Group, Route Table, and Service Endpoints](examples/example-4/main.tf)
+  - [:arrow_forward: Example: Creating Subnet, NSG, and Route Table in an Existing Resource Group](examples/example-5/main.tf)
 
-> :information_source: **Note:** <br>
-> Otherwise, see the full module test here: [:arrow_forward: test/autotest](test/autotest/main.tf) <br>
+  > :information_source: **Note:** <br>
+  > Otherwise, see the full module test here: [:arrow_forward: test/autotest](test/autotest/main.tf) <br>
 
 ## Resources
 
@@ -113,7 +114,7 @@ module "subnet" {
 | <a name="input_subnet_name"></a> [subnet\_name](#input\_subnet\_name) | (Required) Name of the subnet. Changing this forces a new resource to be created. | `string` | n/a | yes |
 | <a name="input_virtual_network_resource_id"></a> [virtual\_network\_resource\_id](#input\_virtual\_network\_resource\_id) | (Required) The ID of the virtual network where the subnet should be created. Changing this forces a new resource to be created. | `string` | n/a | yes |
 | <a name="input_create_network_security_group"></a> [create\_network\_security\_group](#input\_create\_network\_security\_group) | (Optional) Boolean flag which controls if network security group should be created. Defaults to `true`. Set to `false` and provide value for `network_security_group_id` to reference existing network security group. | `bool` | `true` | no |
-| <a name="input_create_route_table"></a> [create\_route\_table](#input\_create\_route\_table) | (Optional) Boolean flag which controls if route table should be created. Defaults to `true`. Set to `false` and provide value for `route_table_id` to reference existing route table. | `bool` | `true` | no |
+| <a name="input_create_route_table"></a> [create\_route\_table](#input\_create\_route\_table) | (Optional) Boolean flag which controls if route table should be created. Defaults to `true`. Set to `false` and either provide value for `route_table_id` to reference existing route table, or skip providing value for `route_table_id` to not use a route table at all. | `bool` | `true` | no |
 | <a name="input_delegation_service_name"></a> [delegation\_service\_name](#input\_delegation\_service\_name) | (Optional) Provide the service name for the subnet delegation configuration. | `string` | `""` | no |
 | <a name="input_disable_bgp_route_propagation"></a> [disable\_bgp\_route\_propagation](#input\_disable\_bgp\_route\_propagation) | (Optional) Boolean flag which controls propagation of routes learned by BGP on that route table. `true` means disable. Defaults to `false`, when used in combination with `create_sub_network_resources` and 'nva\_ip\_address' this should be set to `true` to prevent the default 0.0.0.0/0 route to be propagated in the route table via BGP. | `bool` | `false` | no |
 | <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | (Optional) The name of an existing resource group where the nsg and route table will be created. Changing this forces a new resource to be created. | `string` | `""` | no |
@@ -138,7 +139,6 @@ module "subnet" {
 ## Modules
 
 No modules.
-
 <!-- END_TF_DOCS -->
 
 ## Argument Reference
