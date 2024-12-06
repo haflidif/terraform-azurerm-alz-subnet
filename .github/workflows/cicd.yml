@@ -41,6 +41,7 @@ jobs:
           az_container_name: test ## (Required) AZ backend - AZURE storage container hosting state files
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }} ## (Required - Dependabot Secrets) ARM Client ID
           arm_use_oidc: true ## (Optional) Use OIDC to authenticate to Azure
+          arm_use_azuread: true ## (Optional) Use Azure AD to authenticate to Azure Storage Account
           # arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }} ## (Required - Dependabot Secrets) ARM Client Secret
           arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required - Dependabot Secrets) ARM Subscription ID
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }} ## (Required - Dependabot Secrets) ARM Tenant ID
