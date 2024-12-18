@@ -25,7 +25,7 @@ jobs:
     if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.0
+        uses: actions/checkout@v4.2.2
 
       - name: Run Automated Tests - Terraform Plan
         uses: haflidif/terraform-azure-tests@v1.1.0
