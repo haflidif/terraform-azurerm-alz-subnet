@@ -21,14 +21,13 @@ jobs:
       pull-requests: write
       issues: write
       actions: read
-    # Remember to change the condition on dependabot job after testing.
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.0
 
       - name: Run Dependency Tests - Plan AND Apply AND Destroy
-        uses: haflidif/terraform-azure-tests@main
+        uses: haflidif/terraform-azure-tests@v1.0.0
         with:
           test_type: plan-apply-destroy ## (Required) Valid options are "plan", "plan-apply", "plan-apply-destroy". Default="plan"
           path: "test/autotest" ## (Optional) Specify path to test module to run.
