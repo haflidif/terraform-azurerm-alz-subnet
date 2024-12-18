@@ -38,7 +38,6 @@ jobs:
           az_resource_group: rg-azviking-tfstate ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage account
           az_storage_account_name: stazvikingstatec2e559ef ## (Required) AZ backend - AZURE terraform backend storage account
           az_storage_container_name: test ## (Required) AZ backend - AZURE storage container hosting state files
-          az_storage_key: alz-subnet-testing ## (Required) AZ backend - AZURE storage account key
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }} ## (Required - Dependabot Secrets) ARM Client ID
           arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required - Dependabot Secrets) ARM Subscription ID
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }} ## (Required - Dependabot Secrets) ARM Tenant ID
