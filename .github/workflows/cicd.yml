@@ -7,10 +7,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - "!.github/**"
-      - "!.config/**"
-      - "!examples/**"
     types: [opened, synchronize]
 
 jobs:
