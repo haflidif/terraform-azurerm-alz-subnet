@@ -24,10 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
-      - name: Run Automated Tests - Terraform Plan
-        uses: haflidif/terraform-azure-tests@v1.1.0
+      - name: E2E Test - Terraform Plan
+        uses: haflidif/terraform-azure-plan@v1.1.0
         with:
-          test_type: plan ## (Required) Valid options are "plan", "plan-apply", "plan-apply-destroy". Default="plan"
           path: "test/autotest" ## (Optional) Specify path to test module to run.
           tf_version: latest ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
           tf_var_file: testing.tfvars ## (Required) Specifies Terraform TFVARS file name inside module path (Testing vars)
@@ -39,3 +38,22 @@ jobs:
           arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required - Dependabot Secrets) ARM Subscription ID
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }} ## (Required - Dependabot Secrets) ARM Tenant ID
           github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) Needed to comment output on PR's. ${{ secrets.GITHUB_TOKEN }} already has permissions.
+          arm_use_oidc: true
+          arm_use_azuread: true
+
+
+      # - name: Run Automated Tests - Terraform Plan
+      #   uses: haflidif/terraform-azure-tests@v1.1.0
+      #   with:
+      #     test_type: plan ## (Required) Valid options are "plan", "plan-apply", "plan-apply-destroy". Default="plan"
+      #     path: "test/autotest" ## (Optional) Specify path to test module to run.
+      #     tf_version: latest ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
+      #     tf_var_file: testing.tfvars ## (Required) Specifies Terraform TFVARS file name inside module path (Testing vars)
+      #     tf_state_file: tf-mod-test-alz-subnet ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact (testing state)
+      #     az_resource_group: rg-azviking-tfstate ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage account
+      #     az_storage_account_name: stazvikingstatec2e559ef ## (Required) AZ backend - AZURE terraform backend storage account
+      #     az_storage_container_name: test ## (Required) AZ backend - AZURE storage container hosting state files
+      #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }} ## (Required - Dependabot Secrets) ARM Client ID
+      #     arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required - Dependabot Secrets) ARM Subscription ID
+      #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }} ## (Required - Dependabot Secrets) ARM Tenant ID
+      #     github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) Needed to comment output on PR's. ${{ secrets.GITHUB_TOKEN }} already has permissions.
