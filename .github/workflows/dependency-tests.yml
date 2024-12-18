@@ -1,4 +1,5 @@
 ### This workflow will run only when Dependabot opens a PR on main ###
+### And Changes are done on the terraform versions in the module ###
 ### Full integration test is done by doing a plan, build and destroy of config under ./tests/autotest ###
 ### If tests are successful the PR is automatically merged to main ###
 ### If the merge was completed the next patch version is released and the patch is bumped and pushed to terraform registry ###
@@ -9,6 +10,10 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - "!.github/**"
+      - "!.config/**"
+      - "!examples/**"
 
 jobs:
   # Dependabot will open a PR on terraform version changes, this 'dependabot' job is only used to test TF version changes by running a plan, apply and destroy in sequence.
@@ -21,7 +26,7 @@ jobs:
       pull-requests: write
       issues: write
       actions: read
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.0
