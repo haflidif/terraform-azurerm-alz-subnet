@@ -21,7 +21,7 @@ jobs:
       pull-requests: write
       issues: write
       actions: read
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.0
