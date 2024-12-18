@@ -37,7 +37,7 @@ resource "azurerm_route_table" "route_table" {
   name                          = var.route_table_name
   location                      = var.location
   resource_group_name           = local.resource_group_name
-  disable_bgp_route_propagation = var.disable_bgp_route_propagation
+  bgp_route_propagation_enabled = var.disable_bgp_route_propagation
 
   tags = var.tags
 
@@ -68,7 +68,7 @@ resource "azapi_resource" "subnet" {
   name      = var.subnet_name
   parent_id = var.virtual_network_resource_id
 
-  body = jsonencode({
+  body = {
     properties = {
 
       # List of Address prefixes in the subnet.
@@ -94,5 +94,5 @@ resource "azapi_resource" "subnet" {
       } : null
 
     }
-  })
+  }
 }
