@@ -3,7 +3,6 @@
 
 name: "Automated E2E Test"
 on:
-  workflow_dispatch:
   pull_request:
     types: [opened, synchronize]
     
@@ -13,6 +12,8 @@ on:
       - 'test/autotest/**'
       - '*/**.tf'
       - '!examples/**'
+
+  workflow_dispatch:
 
 jobs:
   terraform-plan:
