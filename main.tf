@@ -31,6 +31,8 @@ resource "azurerm_network_security_group" "nsg" {
   }
 }
 
+#Testing Changes
+
 # Creating a route table for the subnet if it's not referenced by input variable.
 resource "azurerm_route_table" "route_table" {
   count                         = var.create_route_table ? 1 : 0

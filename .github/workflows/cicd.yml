@@ -5,7 +5,6 @@ name: "Automated E2E Test"
 on:
   pull_request:
     types: [opened, synchronize]
-    
     branches:
       - main
     paths: 
