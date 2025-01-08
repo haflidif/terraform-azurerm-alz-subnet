@@ -11,6 +11,12 @@ on:
       - 'test/autotest/**'
       - '*/**.tf'
       - '!examples/**'
+  
+  push:
+    paths:
+      - 'test/autotest/**'
+      - '*/**.tf'
+      - '!examples/**'
 
   workflow_dispatch:
 
@@ -25,7 +31,7 @@ jobs:
       pull-requests: write
       issues: write
       actions: read
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    if: ${{ github.event_name != 'pull_request' || github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -48,8 +54,7 @@ jobs:
           arm_use_azuread: true
 
   terraform-apply:
-    needs: terraform-plan
-    name: "Automated Apply"
+    name: "Automated E2E Test"
     runs-on: ubuntu-latest
     environment: e2e-test-apply
     permissions:
@@ -58,7 +63,7 @@ jobs:
       pull-requests: write
       issues: write
       actions: read
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -66,7 +71,7 @@ jobs:
       - name: E2E Test - Terraform Plan and Apply
         uses: haflidif/terraform-azure-tests@v1.1.0
         with:
-          test_type: plan-apply ## (Required) Valid options are "plan", "plan-apply", "plan-apply-destroy". Default="plan"
+          test_type: plan-apply-destroy ## (Required) Valid options are "plan", "plan-apply", "plan-apply-destroy". Default="plan"
           path: "test/autotest" ## (Optional) Specify path to test module to run.
           tf_version: latest ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
           tf_var_file: testing.tfvars ## (Required) Specifies Terraform TFVARS file name inside module path (Testing vars)
