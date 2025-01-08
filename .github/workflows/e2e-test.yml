@@ -13,6 +13,9 @@ on:
       - '!examples/**'
   
   push:
+    branches-ignore: 
+      - main
+    
     paths:
       - 'test/autotest/**'
       - '*/**.tf'
