@@ -37,7 +37,7 @@ jobs:
     if: ${{ github.event_name != 'pull_request' || github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v6.0.0
 
       - name: E2E Test - Terraform Plan
         uses: haflidif/terraform-azure-plan@v1.2.0
@@ -69,7 +69,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v6.0.0
       
       - name: E2E Test - Terraform Plan and Apply
         uses: haflidif/terraform-azure-tests@v1.2.0
