@@ -31,7 +31,7 @@ jobs:
       - name: Determine version
         if: ${{ steps.label.outputs.match != 'no release' }}
         id: version
-        uses: zwaldowski/semver-release-action@v4
+        uses: zwaldowski/semver-release-action@v5
         with:
           bump: ${{ steps.label.outputs.match }}
           dry_run: true
