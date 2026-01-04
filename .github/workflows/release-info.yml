@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Getting version from label
         id: label
-        uses: zwaldowski/match-label-action@v5
+        uses: zwaldowski/match-label-action@v6
         with:
           allowed: major, minor, patch
           default_match: "no release"
